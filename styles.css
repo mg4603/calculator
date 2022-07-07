@@ -27,5 +27,10 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.5vw;
     
+}
+
+.row div:hover{
+    border: 4px solid rgba(85, 248, 242, .7);
 }
