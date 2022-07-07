@@ -14,6 +14,10 @@ function divide(number1, number2){
     return number1 / number2
 }
 
+function mod(number1, number2){
+    return number1 % number2;
+}
+
 function operate(operator, number1, number2){
     if(operator === '+'){
         return add(number1, number2);
@@ -24,8 +28,11 @@ function operate(operator, number1, number2){
     if(operator === '*'){
         return multiply(number1, number2);
     }
-    if(operator == "/"){
+    if(operator === "/"){
         return divide(number1, number2);
+    }
+    if(operator === "%"){
+        return mod(number1, number2);
     }
 }
 
