@@ -44,3 +44,19 @@ console.log(operate('+', 1, 2));
 console.log(operate('-', 1, 2));
 console.log(operate('*', 1, 2));
 console.log(operate('/', 1, 2));
+
+const numberPad = document.querySelectorAll(".row div");
+const display = document.querySelector(".display");
+
+let displayValue = ""
+
+function populateDisplay(){
+    display.textContent = displayValue;
+}
+
+numberPad.forEach(item=>{
+    item.addEventListener("click", (event)=>{
+        displayValue += event.target.textContent;
+        populateDisplay();
+    });
+})

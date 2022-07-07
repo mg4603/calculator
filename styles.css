@@ -34,3 +34,13 @@ body{
 .row div:hover{
     border: 4px solid rgba(85, 248, 242, .7);
 }
+
+.display{
+    height: 10vh;
+    width: 100%;
+    border: 2px solid rgba(143, 135, 135, 0.5);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 2vw;
+}
