@@ -45,7 +45,7 @@ console.log(operate('-', 1, 2));
 console.log(operate('*', 1, 2));
 console.log(operate('/', 1, 2));
 
-const numberPad = document.querySelectorAll(".row div");
+const numberPad = document.querySelectorAll(".col div");
 const display = document.querySelector(".display");
 
 let displayValue = []
