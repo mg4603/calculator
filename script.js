@@ -63,6 +63,7 @@ let ioHandler = (function(){
             _operators = [];
             _operands = [];
         }
+      
         else if(/[x\+\-\%\=]/.test(char)){
             _operators.push(char);
             if(_allInputs.length)
@@ -135,7 +136,6 @@ numberPad.forEach(item=>{
     item.addEventListener('click', (event)=>{
 
         ioHandler.push(event.target.textContent);
-        
         ioHandler.populateDisplay(display);
     });
 })
