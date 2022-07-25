@@ -1,67 +1,129 @@
-function add(number1, number2){
-    return number1 + number2;
-}
-
-function subtract(number1, number2){
-    return number1 - number2;
-}
-
-function multiply(number1, number2){
-    return number1 * number2;
-}
-
-function divide(number1, number2){
-    return number1 / number2
-}
-
-function mod(number1, number2){
-    return number1 % number2;
-}
-
-function operate(operator, number1, number2){
-    if(operator === '+'){
-        return add(number1, number2);
+const Calculator = (function(){
+    function add(number1, number2){
+        return number1 + number2;
     }
-    if(operator === '-'){
-        return subtract(number1, number2);
+
+    function subtract(number1, number2){
+        return number1 - number2;
     }
-    if(operator === '*'){
-        return multiply(number1, number2);
+    
+    function multiply(number1, number2){
+        return number1 * number2;
     }
-    if(operator === "/"){
-        return divide(number1, number2);
+    
+    function divide(number1, number2){
+        return number1 / number2
     }
-    if(operator === "%"){
-        return mod(number1, number2);
+    
+    function mod(number1, number2){
+        return number1 % number2;
     }
-}
+    function operate(operator, number1, number2){
+        if(operator === '+'){
+            return add(number1, number2);
+        }
+        if(operator === '-'){
+            return subtract(number1, number2);
+        }
+        if(operator === 'x'){
+            return multiply(number1, number2);
+        }
+        if(operator === '/'){
+            return divide(number1, number2);
+        }
+        if(operator === '%'){
+            return mod(number1, number2);
+        }
+    }
+    return {operate};
+})();
 
-console.log(add(1, 2));
-console.log(subtract(1,2));
-console.log(multiply(1,2));
-console.log(divide(1,2));
-console.log(operate('+', 1, 2));
-console.log(operate('-', 1, 2));
-console.log(operate('*', 1, 2));
-console.log(operate('/', 1, 2));
 
-const numberPad = document.querySelectorAll(".col div");
-const display = document.querySelector(".display");
 
-let displayValue = []
 
-function populateDisplay(display, value){
-    display.textContent = value;
-}
+const numberPad = document.querySelectorAll('.col div');
+const display = document.querySelector('.display');
 
-numberPad.forEach(item=>{
-    item.addEventListener("click", (event)=>{
-        if(event.target.textContent === "="){
-            
+
+let ioHandler = (function(){
+    let _allInputs = [];
+    let _operators = [];
+    let _operands = [];
+
+    let _clear = ()=>{
+        _allInputs = [];
+        _operands = [];
+        _operators = [];
+    }
+
+    let push = (char)=>{
+        if(char === 'C'){
+            _allInputs = [];
+            _operators = [];
+            _operands = [];
+        }
+        else if(/[x\+\-\%\=]/.test(char)){
+            _operators.push(char);
+            if(_allInputs.length)
+            {
+                _operands.push(+(_allInputs.join('')));
+            }
+            _allInputs = []
+        }
+        else{
+            _allInputs.push(char);
+        }
+    };
+
+    let _output = ()=>{
+
+        if(_operators.at(-1) === '='){
+            if(_operands.length == 2){
+                let intermediateValue = Calculator.operate(_operators[0], _operands[0], _operands[1]);
+                _operands = [];
+                _operators = [];
+                _operands.push(intermediateValue)
+                console.log(_operands, _operators)
+                return intermediateValue;
+            }else{
+                return "ERROR"
+            }
         }
 
-        displayValue.push(event.target.textContent);
+        if(_operands.length == 2 && _operators.length == 2){
+            let intermediateValue = Calculator.operate(_operators[0], _operands[0], _operands[1])
+            _operands = []
+            _operators =  _operators.slice(1);
+            _operands.push(intermediateValue);
+        }
+
+        if(_operands.length && _operators.length)
+        {   console.log(_operands, _operators)
+            return _operands.at(0)+ _operators.at(0) + _allInputs.join('');
+        }
+        if(_allInputs.length){
+            return _allInputs.join('')
+        }
+        return ''
+    };
+    let populateDisplay = (display)=>{
+        display.textContent = _output();
+    }
+    return {push, populateDisplay};
+})();
+
+
+
+
+
+
+
+
+numberPad.forEach(item=>{
+    item.addEventListener('click', (event)=>{
+
+        ioHandler.push(event.target.textContent);
         
-        populateDisplay(display, displayValue.join(" "));
+        ioHandler.populateDisplay(display);
     });
 })
