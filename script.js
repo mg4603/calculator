@@ -49,11 +49,12 @@ let ioHandler = (function(){
     let _allInputs = [];
     let _operators = [];
     let _operands = [];
-
+    let _multipleFloats = 0;
     let _clear = ()=>{
         _allInputs = [];
         _operands = [];
         _operators = [];
+        _multipleFloats = 0;
     }
 
     let push = (char)=>{
@@ -66,6 +67,9 @@ let ioHandler = (function(){
             _operators.push(char);
             if(_allInputs.length)
             {
+                if(_allInputs.join("").split('.').length > 2){
+                    _multipleFloats = 1;
+                }
                 _operands.push(+(_allInputs.join('')));
             }
             _allInputs = []
@@ -76,17 +80,24 @@ let ioHandler = (function(){
     };
 
     let _output = ()=>{
-
+        if(_multipleFloats){
+            return "ERROR: Not a Number";
+        }
         if(_operators.at(-1) === '='){
             if(_operands.length == 2){
+                if(_operands[1] == 0 && (_operators[0] === '/' || _operators[0] === '%')){
+                    _clear();
+                    return "ERROR: Division by Zero Being Attempted";
+                }
                 let intermediateValue = Calculator.operate(_operators[0], _operands[0], _operands[1]);
                 _operands = [];
                 _operators = [];
                 _operands.push(intermediateValue)
-                console.log(_operands, _operators)
+                // console.log(_operands, _operators)
                 return intermediateValue;
             }else{
-                return "ERROR"
+                _clear();
+                return "ERROR: Operation Cannot be Performed"
             }
         }
 
@@ -98,7 +109,8 @@ let ioHandler = (function(){
         }
 
         if(_operands.length && _operators.length)
-        {   console.log(_operands, _operators)
+        {
+            // console.log(_operands, _operators)
             return _operands.at(0)+ _operators.at(0) + _allInputs.join('');
         }
         if(_allInputs.length){
