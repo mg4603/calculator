@@ -22,7 +22,7 @@ body{
 }
 
 .calculator-body .col:last-child div:last-child{
-    grid-row: 2/ span 3;
+    grid-row: 3/ span 2;
 }
 .col div{
     width: 8vw;
